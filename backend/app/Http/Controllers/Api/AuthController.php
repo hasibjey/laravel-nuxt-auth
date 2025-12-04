@@ -22,6 +22,7 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'role' => 'user',
             ]);
 
             $message = "User registered successfully.";
@@ -31,7 +32,6 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => $message,
-            'user' => new UserResource($user),
         ]);
         
     }
