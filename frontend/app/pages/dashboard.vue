@@ -1,11 +1,22 @@
+<script setup>
+const auth = useAuthStore();
+
+definePageMeta({
+    title: 'Dashboard',
+    middleware: 'auth'
+});
+
+</script>
+
+
 <template>
     <section class="text-center">
-        <h1 class="font-bold text-4xl italic mt-20">Welcome to Nuxt.js Dashboard</h1>
+        <h1 class="font-bold text-4xl italic mt-20">Welcome to <span class="capitalize">{{ auth.user?.name }}</span></h1>
+        <p class="text-gray-700">{{ auth.user?.email }}</p>
 
-        <ul class="mt-4">
-            <li class="py-1 px-3 transition-all duration-300 cursor-pointer hover:text-red-500">
-                Logout
-            </li>
-        </ul>
+
+        <button class="py-1 px-7 border rounded transition-all duration-300 cursor-pointer hover:text-red-500 mt-4">
+            Logout
+        </button>
     </section>
 </template>

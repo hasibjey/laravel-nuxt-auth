@@ -36,4 +36,15 @@ class AuthController extends Controller
         ]);
         
     }
+
+    public function login(LoginRequest $request)
+    {
+        $user = $request->authenticate();
+        $token = $user->createToken($request->email)->plainTextToken;
+
+        return response()->json([
+            'user' => new UserResource($user),
+            'token' => $token,
+        ], 200);
+    }
 }

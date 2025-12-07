@@ -10,6 +10,11 @@ const form = reactive({
 
 const errors = ref({});
 
+definePageMeta({
+    title: 'Register',
+    middleware: 'guest'
+});
+
 const handleRegister = async () => {
     try {
         const { $toast } = useNuxtApp();
