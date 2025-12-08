@@ -41,7 +41,8 @@ class LoginRequest extends FormRequest
 
         // If user not found, wrong role, or password incorrect
         if (!$user || $user->role !== 'user' || !Hash::check($password, $user->password)) {
-            RateLimiter::hit($this->throttleKey());
+            $decaySeconds = 120;
+            RateLimiter::hit($this->throttleKey(), $decaySeconds);
 
             throw ValidationException::withMessages([
                 'email' => ['Invalid credentials or unauthorized access.'],

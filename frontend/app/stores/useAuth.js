@@ -32,9 +32,9 @@ export const useAuthStore = defineStore('auth', {
                 
                 if(res.status === 200) {
                     
+                    this.isAuthenticated = true;
                     this.token = res._data.token;
                     this.setUser(res._data.user);
-                    this.isAuthenticated = true;
 
                     $toast.fire({
                         icon: 'success',
@@ -59,5 +59,31 @@ export const useAuthStore = defineStore('auth', {
         setUser(user) {
             this.user = user;
         },
+
+        async logout() {
+            const { $api, $toast } = useNuxtApp();
+            try {
+                const res = await $api.raw('/logout', {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    }
+                });
+
+                if(res.status === 200) {
+                    this.$reset();
+                    navigateTo('/');
+
+                    $toast.fire({
+                        icon: 'success',
+                        title: 'Logout successfully!',
+                        timer: 1000,
+                    });
+                }
+                
+            } catch (error) {
+                throw error;
+            }
+        }
     }
 });
