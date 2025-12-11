@@ -11,5 +11,9 @@ export default defineNuxtConfig({
     ],
   },
 
-  modules: ['@pinia/nuxt', '@nuxt/icon', 'pinia-plugin-persistedstate/nuxt',],
+  modules: ['@pinia/nuxt', '@nuxt/icon', 'pinia-plugin-persistedstate/nuxt', '@nuxtjs/seo'],
+
+  seo: {
+    titleTemplate: '%title'
+  }
 })

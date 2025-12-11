@@ -8,7 +8,9 @@ Route::middleware('guest:sanctum')->group(function() {
     Route::controller(AuthController::class)->group(function() {
         Route::post('register', 'register');
         Route::post('login', 'login');
-        Route::post('logout', 'logout');
+        Route::post('forgot/password', 'forgot');
+        Route::post('account/verification', 'verification');
+        Route::post('password/reset', 'reset');
     });
 });
 

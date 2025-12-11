@@ -75,9 +75,9 @@ const hendleLogin = async () => {
                         </span>
                         <span v-else>Login</span>
                     </button>
-                    <a class="text-sm text-blue-500 hover:underline" href="">
+                    <nuxtLink to="password/forgot" class="text-sm text-blue-500 hover:underline">
                         Forgot Your Password?
-                    </a>
+                    </nuxtLink>
                 </div>
             </form>
         </div>

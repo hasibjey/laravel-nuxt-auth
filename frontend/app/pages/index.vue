@@ -1,3 +1,9 @@
+<script setup>
+definePageMeta({
+    title: 'Home',
+});
+</script>
+
 <template>
     <div>
         <h1 class="flex justify-center text-3xl py-5 text-teal-600 font-bold italic">Welcome to zarfbit</h1>

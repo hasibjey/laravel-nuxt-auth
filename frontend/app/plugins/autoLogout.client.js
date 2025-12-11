@@ -1,5 +1,6 @@
 export default defineNuxtPlugin((nuxtApp) => {
-    const auth = useAuthStore()
+    const auth = useAuthStore();
+    const authSecure = useAuthSecureStore();
 
     let timer
     const INACTIVITY_LIMIT = 30 * 60 * 1000
@@ -9,6 +10,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         if (auth.isAuthenticated) {
             timer = setTimeout(() => {
                 auth.logout()
+                authSecure.reset();
                 // alert('You have been logged out due to inactivity')
             }, INACTIVITY_LIMIT)
         }

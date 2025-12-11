@@ -62,6 +62,8 @@ export const useAuthStore = defineStore('auth', {
 
         async logout() {
             const { $api, $toast } = useNuxtApp();
+            const authSecure = useAuthSecureStore();
+
             try {
                 const res = await $api.raw('/logout', {
                     method: 'POST',
@@ -72,6 +74,7 @@ export const useAuthStore = defineStore('auth', {
 
                 if(res.status === 200) {
                     this.$reset();
+                    authSecure.reset();
                     navigateTo('/');
 
                     $toast.fire({
