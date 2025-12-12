@@ -13,6 +13,9 @@ definePageMeta({
     <section class="text-center">
         <h1 class="font-bold text-4xl italic mt-20">Welcome to <span class="capitalize">{{ auth.user?.name }}</span></h1>
         <p class="text-gray-700">{{ auth.user?.email }}</p>
+        <div>
+            {{ auth.user }}
+        </div>
 
 
         <button class="py-1 px-7 border rounded transition-all duration-300 cursor-pointer hover:text-red-500 mt-4"

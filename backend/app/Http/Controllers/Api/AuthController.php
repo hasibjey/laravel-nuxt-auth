@@ -45,12 +45,27 @@ class AuthController extends Controller
         $user = $request->authenticate();
         $token = $user->createToken($request->email)->plainTextToken;
 
+
+        if($user->email_verified_at === null) {
+            return response()->json([
+                'user' => $user,
+                'token' => $token,
+            ], 200);
+        }
+
         return response()->json([
             'user' => new UserResource($user),
             'token' => $token,
         ], 200);
     }
 
+    public function getUser(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        return response()->json([
+            'user' => new UserResource($user),
+        ], 200);
+    }
 
     public function logout(Request $request)
     {
@@ -110,6 +125,34 @@ class AuthController extends Controller
         }
     }
 
+    public function verify(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email|exists:verification_codes,identifier',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            User::where('email', $request->email)->update([
+                'email_verified_at' => Carbon::now()
+            ]);
+
+            VerificationCode::where('identifier', $request->email)->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Your account verified successfully!'
+            ], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Your account verify failed. Please try again.'
+            ], 201);
+        }
+
+    }
+
     public function reset(Request $request)
     {
         $request->validate([
@@ -125,18 +168,16 @@ class AuthController extends Controller
 
             VerificationCode::where('identifier', $request->email)->delete();
 
+            DB::commit();
             return response()->json([
                 'message' => 'Your password was reset successfully!'
             ],200);
 
         } catch (\Throwable $th) {
+            DB::rollBack();
             return response()->json([
                 'message' => 'Password reset failed. Please try again.'
             ],201);
         }
-
-        
-
-        
     }
 }

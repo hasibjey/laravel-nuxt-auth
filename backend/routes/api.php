@@ -16,10 +16,9 @@ Route::middleware('guest:sanctum')->group(function() {
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::controller(AuthController::class)->group(function() {
+        Route::post('account/verify', 'verify');
         Route::post('logout', 'logout');
+        Route::post('user', 'getUser');
     });
 });
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');

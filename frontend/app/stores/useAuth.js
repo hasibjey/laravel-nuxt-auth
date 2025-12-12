@@ -87,6 +87,29 @@ export const useAuthStore = defineStore('auth', {
             } catch (error) {
                 throw error;
             }
+        },
+
+        async userData() {
+            const { $api, $toast } = useNuxtApp();
+
+            try {
+                const res = await $api.raw('/user', {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    },
+                    body:{
+                        email: this.user?.email
+                    }
+                });
+
+                if(res.status === 200) {
+                    this.user = res._data.user;
+                }
+                
+            } catch (error) {
+                throw error;
+            }
         }
     }
 });

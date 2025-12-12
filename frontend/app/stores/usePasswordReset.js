@@ -2,69 +2,92 @@ import { defineStore } from 'pinia';
 
 export const usePasswordReset = defineStore('passwordReset', {
     state: () => ({
-        loadding: false
+        loading: false
     }),
-
 
     actions: {
         async verifyCode(email) {
+            this.loading = true;
             try {
-                const res = await $fetch.raw('http://localhost:8000/api/forgot/password', {
+                return await $fetch.raw('http://localhost:8000/api/forgot/password', {
                     method: "POST",
-                    body: { email: email }
+                    body: { email }
                 });
-
-                return res;
             } catch (error) {
                 throw error;
+            } finally {
+                this.loading = false;
             }
         },
 
         async verification(email, code) {
+            this.loading = true;
+
             try {
                 const res = await $fetch.raw('http://localhost:8000/api/account/verification', {
                     method: "POST",
-                    body: {
-                        email: email,
-                        code: code
-                    }
+                    body: { email, code }
                 });
 
-                return res;
-            } catch (error) {
-                throw error;
-            }
-        },
+                const auth = useAuthStore();
+                const { $toast } = useNuxtApp();
+                
+                if (auth.isAuthenticated) {
+                    await $fetch.raw('http://localhost:8000/api/account/verify', {
+                        method: "POST",
+                        body: { email },
+                        headers: {
+                            Authorization: `Bearer ${auth.token}`
+                        }
+                    });
 
-        async verification(email, code) {
-            try {
-                const res = await $fetch.raw('http://localhost:8000/api/account/verification', {
-                    method: "POST",
-                    body: {
-                        email: email,
-                        code: code
+                    if (res.status === 201) {
+                        $toast.fire({
+                            icon: 'warning',
+                            title: res._data.message,
+                            timer: 3000,
+                        });
                     }
-                });
+    
+                    if (res.status === 200) {
+                        $toast.fire({
+                            icon: 'success',
+                            title: 'User Verified Successfully',
+                            timer: 3000,
+                        });
+                        
+                        if (auth.isAuthenticated) {
+                            await auth.userData();
+                        }
+                        
+                        setTimeout(() => navigateTo('/dashboard'), 600);
+                    }
+
+                }
+                
 
                 return res;
+
             } catch (error) {
                 throw error;
+            } finally {
+                this.loading = false;
             }
         },
 
         async resetPassword(formData) {
-            try {
-                const res = await $fetch.raw('http://localhost:8000/api/password/reset', {
-                    method: "POST",
-                    body: {...formData }
-                });
+            this.loading = true;
 
-                return res;
+            try {
+                return await $fetch.raw('http://localhost:8000/api/password/reset', {
+                    method: "POST",
+                    body: { ...formData }
+                });
             } catch (error) {
                 throw error;
+            } finally {
+                this.loading = false;
             }
-        },
-
-
+        }
     }
 });
