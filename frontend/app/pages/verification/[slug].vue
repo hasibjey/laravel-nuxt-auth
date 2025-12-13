@@ -15,7 +15,10 @@ const interval = ref(null);
 const countdown = ref(2); // in minutes
 const resend = ref(true);
 
-definePageMeta({ title: 'Forgot Password' });
+definePageMeta({
+    title: 'Account Verification',
+    middleware: 'auth-verify'
+});
 
 onMounted(() => {
     authSecure.resumeCountdownIfNeeded();
@@ -148,14 +151,6 @@ const handleResendCode = async () => {
                         class="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed"
                         @click.prevent="handleResendCode">
                         Resend Code
-                    </button>
-                </div>
-
-                <div class="text-center">
-                    <button
-                        class="py-1 px-7 border rounded transition-all duration-300 cursor-pointer hover:text-red-500 mt-4"
-                        @click.prevent="auth.logout()">
-                        Logout
                     </button>
                 </div>
             </form>

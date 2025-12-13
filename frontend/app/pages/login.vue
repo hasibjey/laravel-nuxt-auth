@@ -32,7 +32,7 @@ const hendleLogin = async () => {
         if(res.status === 200) {
             form.email = null;
             form.password = null;
-            auth.setLoading(false);
+            auth.loading = false;
             navigateTo('dashboard');
         }
         
