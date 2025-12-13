@@ -1,11 +1,13 @@
 <script setup>
 import { ref, reactive } from 'vue';
 
+const registerStore = useRegisterStore();
+
 const form = reactive({
-    name: null,
-    email: null,
-    password: null,
-    password_confirmation: null
+    name: "user name",
+    email: 'user@gmail.com',
+    password: 'password',
+    password_confirmation: 'password'
 });
 
 const errors = ref({});
@@ -18,27 +20,46 @@ definePageMeta({
 const handleRegister = async () => {
     try {
         const { $toast } = useNuxtApp();
-        const registerStore = useRegisterStore();
         errors.value = {};
 
-        const response = await registerStore.registerUser(form);
+        const res = await registerStore.registerUser(form);
 
-        form.name = null,
-        form.email = null,
-        form.password = null,
-        form.password_confirmation = null
+        if(res.status === 200) {
 
-        $toast.fire({
-            icon: 'success',
-            title: response?.message || 'Registration successful',
-            timer: 1000,
-        });
+            const loginForm = reactive({
+                email: form.email,
+                password: form.password,
+            });
 
-        navigateTo('/login');
+            form.name = null;
+            form.email = null;
+            form.password = null;
+            form.password_confirmation = null;
+
+            registerStore.loading = false;
+
+
+            const auth = useAuthStore();
+            const resLogin = await auth.login(loginForm);
+
+            if(resLogin.status === 200) {
+                auth.loading = false;
+                $toast.fire({
+                    icon: 'success',
+                    title: res._data?.message,
+                    timer: 1000,
+                });
+        
+                navigateTo('/login');
+            }
+    
+        }
+
 
     } catch (error) {
         if (error?.data?.errors) {
             errors.value = error.data.errors;
+            registerStore.loading = false;
         }
     }
 
@@ -51,33 +72,43 @@ const handleRegister = async () => {
         <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
             <h2 class="text-2xl font-bold mb-6 text-center">Customer Registration</h2>
             <form @submit.prevent="handleRegister">
-                <div class="mb-4">
-                    <label for="name" class="block text-gray-700">Name</label>
-                    <input id="name" type="text" v-model="form.name" autofocus class="form-control"
-                        :class="(errors.name ? ' border-red-600' : '')" autocomplete="name">
-                    <span class="form-error" v-if="errors.name">{{ errors.name[0] }}</span>
-                </div>
-                <div class="mb-4">
-                    <label for="email" class="block text-gray-700">Email Address</label>
-                    <input id="email" type="email" v-model="form.email" class="form-control"
-                        :class="(errors.name ? ' border-red-600' : '')" autocomplete="email">
-                    <span class="form-error" v-if="errors.email">{{ errors.email[0] }}</span>
-                </div>
-                <div class="mb-6">
-                    <label for="password" class="block text-gray-700">Password</label>
-                    <input id="password" type="password" v-model="form.password" class="form-control"
-                        :class="(errors.name ? ' border-red-600' : '')" autocomplete="new-password">
-                    <span class="form-error" v-if="errors.password">{{ errors.password[0] }}</span>
-                </div>
-                <div class="mb-6">
-                    <label for="password_confirmation" class="block text-gray-700">Confirm Password</label>
-                    <input id="password_confirmation" type="password" v-model="form.password_confirmation"
-                        class="form-control" autocomplete="confirm_password">
-                </div>
+                <FieldsInput
+                label="Name"
+                placeholder="Enter your name"
+                autocomplete="name"
+                v-model="form.name"
+                :error="errors?.name?.[0]"
+                autofocus="true" />
+                
+                <FieldsInput
+                label="Email Address"
+                placeholder="Enter your email address"
+                autocomplete="email"
+                v-model="form.email"
+                :error="errors?.email?.[0]" />
+                
+                <FieldsInput
+                label="Password"
+                type="password"
+                placeholder="Enter your password"
+                autocomplete="new-password"
+                v-model="form.password"
+                :error="errors?.password?.[0]" />
+
+                <FieldsInput
+                label="Confirm Password"
+                type="password"
+                placeholder="Enter confirm password"
+                autocomplete="new-confirm_password"
+                v-model="form.password_confirmation" />
+
                 <div class="flex items-center justify-between">
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                        Register
-                    </button>
+                    <fieldsSubmitButton
+                    text="Register"
+                    :loading="registerStore.loading"
+                    loadingText="Processing"
+                    />
+
                     <NuxtLink to="/login" class="text-sm text-blue-500 hover:underline">
                         Already registered? Login here.
                     </NuxtLink>

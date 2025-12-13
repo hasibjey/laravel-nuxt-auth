@@ -5,7 +5,7 @@ export const useAuthStore = defineStore('auth', {
         user: null,
         token: null,
         isAuthenticated: false,
-        loadding: false,
+        loading: false,
     }),
 
     persist: true,
@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth', {
         getUser: (state) => state.user,
         getToken: (state) => state.token,
         getAuthenticated: (state) => state.isAuthenticated,
-        getLoadding: (state) => state.loadding,
+        getloading: (state) => state.loading,
     },
 
 
@@ -53,7 +53,7 @@ export const useAuthStore = defineStore('auth', {
         },
 
         setLodding(status) {
-            this.loadding = status;
+            this.loading = status;
         },
         
         setUser(user) {

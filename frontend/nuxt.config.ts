@@ -15,5 +15,5 @@ export default defineNuxtConfig({
 
   seo: {
     titleTemplate: '%title'
-  }
+  },
 })

@@ -2,6 +2,7 @@
 import { navigateTo } from 'nuxt/app';
 import { reactive, ref } from 'vue';
 
+
 const auth = useAuthStore();
 const authSecure = useAuthSecureStore();
 
@@ -31,7 +32,7 @@ const hendleLogin = async () => {
         if(res.status === 200) {
             form.email = null;
             form.password = null;
-            auth.setLodding(false);
+            auth.setLoading(false);
             navigateTo('dashboard');
         }
         
@@ -51,30 +52,28 @@ const hendleLogin = async () => {
             <span class="form-error border py-1.5 px-1 rounded-sm my-2 " v-if="authSecure.disable">Too many login
                 attempts. Please try again in {{ authSecure.countdown }} seconds.</span>
             <form @submit.prevent="hendleLogin">
-                <div class="mb-4">
-                    <label for="email" class="block text-gray-700">Email Address</label>
-                    <input id="email" type="email" v-model="form.email" autofocus
-                        class="w-full px-3 py-1.5 border rounded" autocomplete="email">
-                    <span v-if="!authSecure.disable">
-                        <span class="form-error" v-if="errors.email">{{ errors.email[0] }}</span>
-                    </span>
-                </div>
-                <div class="mb-6">
-                    <label for="password" class="block text-gray-700">Password</label>
-                    <input id="password" type="password" v-model="form.password"
-                        class="w-full px-3 py-1.5 border rounded" autocomplete="new-password">
-                    <span class="form-error" v-if="errors.password">{{ errors.password[0] }}</span>
-                </div>
+                <FieldsInput
+                label="Email Address"
+                placeholder="Enter email address"
+                autocomplete="email"
+                v-model="form.email"
+                :error="errors?.email?.[0]"
+                :errorCondition="!authSecure.disable"/>
+
+                <FieldsInput
+                label="Password"
+                type="password"
+                placeholder="Enter your password"
+                autocomplete="password"
+                v-model="form.password"
+                :error="errors?.password?.[0]"/>
+
                 <div class="flex items-center justify-between">
-                    <button type="submit"
-                        class="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed"
-                        :disabled="authSecure.disable">
-                        <span class="flex justify-end items-center gap-0 relative" v-if="auth.loadding">
-                            <span>Processing</span>
-                            <Icon name="line-md:loading-alt-loop" class="text-4xl absolute left-1/2 -translate-x-1/2 text-pink-600" />
-                        </span>
-                        <span v-else>Login</span>
-                    </button>
+                    <FieldsSubmitButton
+                    text="Login"
+                    :loading="auth.loadding"
+                    :disabled="authSecure.disable"
+                    loadingText="Processing"/>
                     <nuxtLink to="password/forgot" class="text-sm text-blue-500 hover:underline">
                         Forgot Your Password?
                     </nuxtLink>
