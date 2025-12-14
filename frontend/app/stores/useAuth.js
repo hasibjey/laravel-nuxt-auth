@@ -59,7 +59,7 @@ export const useAuthStore = defineStore('auth', {
             this.user = user;
         },
 
-        async logout() {
+        async logout(message = null) {
             const { $api, $toast } = useNuxtApp();
             const authSecure = useAuthSecureStore();
 
@@ -75,11 +75,18 @@ export const useAuthStore = defineStore('auth', {
                     this.$reset();
                     authSecure.reset();
                     navigateTo('/');
+                    if(message) {
+                        await $toast.fire({
+                            icon: 'info',
+                            title: message,
+                            timer: 1500,
+                        });
+                    }
 
-                    $toast.fire({
+                    await $toast.fire({
                         icon: 'success',
                         title: 'Logout successfully!',
-                        timer: 1000,
+                        timer: 1500,
                     });
                 }
                 

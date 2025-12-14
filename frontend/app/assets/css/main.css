@@ -12,3 +12,22 @@
 .colored-toast {
     @apply bg-white text-black text-sm;
 }
+
+.nav-group {
+    @apply flex justify-center items-center;
+}
+.nav-item {
+    @apply relative;
+}
+.nav-link {
+    @apply block py-1 px-3 transition-all duration-300 hover:text-purple-700;
+}
+.nav-sub-group {
+    @apply absolute top-full left-0 min-w-32 w-full pt-2 *:first:rounded-t-sm *:last:rounded-b bg-white;
+}
+.nav-sub-item {
+    @apply relative border last:border-t-0 border-gray-500;
+}
+.nav-sub-item {
+    @apply block px-2 py-1 text-sm cursor-pointer transition-all duration-300 hover:pl-3 hover:text-teal-600;
+}

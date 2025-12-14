@@ -19,6 +19,8 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('account/verify', 'verify');
         Route::post('logout', 'logout');
         Route::post('user', 'getUser');
+        Route::post('user/update', 'update');
+        Route::post('user/password/change', 'change');
     });
 });
 

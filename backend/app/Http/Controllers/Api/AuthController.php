@@ -180,4 +180,43 @@ class AuthController extends Controller
             ],201);
         }
     }
+
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'name'  => 'required|string'
+        ]);
+
+        $user = User::where('email', $validated['email'])->firstOrFail();
+
+        $user->update([
+            'name' => $validated['name']
+        ]);
+
+        return response()->json([
+            'message' => 'Profile information updated!',
+            'user' => new UserResource($user)
+        ]);
+    }
+
+    public function change(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'old_password' => ['required', 'current_password:sanctum'],
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = User::where('email', $validated['email'])->firstOrFail();
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json([
+            'message' => 'Password change successfuly!',
+            'user' => new UserResource($user)
+        ]);
+    }
 }
