@@ -2,13 +2,6 @@
 @import "tailwindcss";
 @import "./tailwind-inline.css";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
-
-
-
 @theme {
     --color-side-primary: #343a40;
     --color-side-secondary: #c2c7d0;

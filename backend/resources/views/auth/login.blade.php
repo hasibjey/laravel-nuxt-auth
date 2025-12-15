@@ -1,36 +1,43 @@
 <x-guest-layout>
-    <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-6 text-center">Admin Login</h2>
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <div class="mb-4">
-                <label for="email" class="block text-gray-700">Email Address</label>
-                <input id="email" type="email" name="email" required autofocus
-                       class="form-control @error('email') border-red-500 @enderror"
-                       value="admin@gmail.com">
-                @error('email')
-                    <p class="form-error">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="mb-6">
-                <label for="password" class="block text-gray-700">Password</label>
-                <input id="password" type="password" name="password" required
-                       class="form-control @error('password') border-red-500 @enderror" value="password">
-                @error('password')
-                    <p class="form-error">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="flex items-center justify-between">
-                <button type="submit"
-                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    Login
-                </button>
-                @if (Route::has('forgot.password'))
-                    <a class="text-sm text-blue-500 hover:underline" href="{{ route('forgot.password') }}">
-                        Forgot Your Password?
-                    </a>
-                @endif
-            </div>
-        </form>
+    <x-slot name="title">Login</x-slot>
+
+    <div class="bg-white shadow-[0_0_5px] shadow-side-secondary rounded-lg w-80 xl:w-3/12 py-4">
+        <div class="border-b border-gray-200 py-4">
+            <h1 class="text-3xl font-bold text-center">Admin Login</h1>
+        </div>
+        <div class="p-6">
+            <form action="{{ route('login') }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <div class="addon-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" class="form-control" placeholder="Email address" name="email"
+                            value="{{ old('email') }}">
+                    </div>
+                    @error('email')
+                        <span class="zb-text-error">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="form-group mt-5">
+                    <div class="addon-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" placeholder="Password" name="password">
+                    </div>
+                    @error('password')
+                        <span class="zb-text-error">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="form-group mt-6">
+                    <button type="submit"
+                        class="btn btn-primary w-full bg-blue-500 text-white !border-blue-500 hover:bg-blue-600">Login</button>
+                </div>
+            </form>
+
+            @if (Route::has('forgot.password'))
+                <a class="text-sm text-blue-500 hover:underline text-center block" href="{{ route('forgot.password') }}">
+                    Forgot Your Password?
+                </a>
+            @endif
+        </div>
     </div>
 </x-guest-layout>

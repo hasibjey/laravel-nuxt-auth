@@ -55,10 +55,11 @@ class AccountVerificationController extends Controller
 
             $verifyCode->delete();
 
-            flash()->success('Your account verify successfuly!  ');
+            flash()->success('Your account verify successfuly!');
             return Redirect::route('dashboard');
         }
         else {
+            flash()->success('Your account verify successfuly!');
             return redirect()->route(
                 'password.reset',
                 [
