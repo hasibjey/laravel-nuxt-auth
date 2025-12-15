@@ -25,8 +25,8 @@
                         class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                     Login
                 </button>
-                @if (Route::has('password.request'))
-                    <a class="text-sm text-blue-500 hover:underline" href="{{ route('password.request') }}">
+                @if (Route::has('forgot.password'))
+                    <a class="text-sm text-blue-500 hover:underline" href="{{ route('forgot.password') }}">
                         Forgot Your Password?
                     </a>
                 @endif
