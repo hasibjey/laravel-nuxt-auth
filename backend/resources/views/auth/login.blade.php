@@ -6,18 +6,18 @@
             <div class="mb-4">
                 <label for="email" class="block text-gray-700">Email Address</label>
                 <input id="email" type="email" name="email" required autofocus
-                       class="w-full px-3 py-1.5 border rounded @error('email') border-red-500 @enderror"
-                       value="{{ old('email') }}">
+                       class="form-control @error('email') border-red-500 @enderror"
+                       value="admin@gmail.com">
                 @error('email')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="form-error">{{ $message }}</p>
                 @enderror
             </div>
             <div class="mb-6">
                 <label for="password" class="block text-gray-700">Password</label>
                 <input id="password" type="password" name="password" required
-                       class="w-full px-3 py-1.5 border rounded @error('password') border-red-500 @enderror">
+                       class="form-control @error('password') border-red-500 @enderror" value="password">
                 @error('password')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="form-error">{{ $message }}</p>
                 @enderror
             </div>
             <div class="flex items-center justify-between">

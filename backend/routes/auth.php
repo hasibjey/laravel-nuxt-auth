@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AccountVerification;
+use App\Http\Controllers\Auth\AccountVerificationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -35,18 +37,18 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)
-        ->name('verification.notice');
 
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
+Route::get('verify/code/{hash}', [AccountVerificationController::class, 'sendCode'])
+    ->name('send.code');
 
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware('throttle:6,1')
-        ->name('verification.send');
 
+Route::get('verify/account/{hash}', [AccountVerificationController::class, 'verifyAccount'])
+    ->name('verifyAccount');
+
+Route::post('verification/account', [AccountVerificationController::class, 'verification'])
+    ->name('verification.account');
+    
+Route::middleware(['auth', 'verify'])->group(function () {
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
         ->name('password.confirm');
 
