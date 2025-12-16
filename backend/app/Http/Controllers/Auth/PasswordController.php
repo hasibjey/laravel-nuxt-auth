@@ -11,20 +11,43 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\View\View;
 
 class PasswordController extends Controller
 {
-    public function forgot()
+    /**
+     * Show the forgot password form.
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     * view forgot password reset 
+     */
+    public function forgot(): View
     {
         return view('auth.forgot-password');
     }
 
-    public function forgotCode(Request $request)
+    /**
+     * Redirect the user to the send code route with the encrypted email address.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function forgotCode(Request $request): RedirectResponse
     {
+        $request->validate([
+            'email' => 'required|email|exists:users,email,role,admin',
+        ]);
         return redirect()->route('send.code', [encrypt($request->email)]);
     }
 
-    public function reset(Request $request)
+    /**
+     * Resets the user's password.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function reset(Request $request): View
     {
         $code = decrypt($request->code);
         $email = decrypt($request->email);
@@ -32,7 +55,18 @@ class PasswordController extends Controller
         return view('auth.reset-password', compact('email', 'code'));
     }
 
-    public function store(Request $request)
+    /**
+     * Resets the user's password.
+     *
+     * This function validates the request data, and if it's valid,
+     * it updates the user's password and deletes the verification code.
+     * If an error occurs, it rolls back the database transaction and
+     * flashes an error message. If the operation is successful,
+     * it flashes a success message and redirects the user to the welcome page.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'email' => 'required|email|exists:users,email|exists:verification_codes,identifier',
@@ -49,7 +83,7 @@ class PasswordController extends Controller
             VerificationCode::where('identifier', $request->email)->delete();
 
             DB::commit();
-            
+
             flash()->success('Password reset successfuly!');
             return Redirect::route('welcome');
         } catch (\Throwable $th) {
@@ -58,7 +92,7 @@ class PasswordController extends Controller
             return Redirect::back();
         }
     }
-    
+
     /**
      * Update the user's password.
      */

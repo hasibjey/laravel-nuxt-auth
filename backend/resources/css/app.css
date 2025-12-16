@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 @import "tailwindcss";
-@import "./tailwind-inline.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+
 
 
 
@@ -200,7 +200,7 @@ table tbody>tr>td {
 }
 
 .btn {
-    @apply border border-side-secondary rounded-sm px-1.5 py-0.5 cursor-pointer;
+    @apply border rounded-sm px-1.5 py-0.5 cursor-pointer;
 }
 
 .btn-group {
@@ -208,35 +208,35 @@ table tbody>tr>td {
 }
 
 .btn-primary {
-    @apply bg-blue-500 text-white !border-blue-500 transition-all duration-300 hover:bg-blue-600 hover:border-blue-600;
+    @apply bg-blue-500 text-white border-blue-400 transition-all duration-300 hover:bg-blue-700 hover:border-blue-700;
 }
 
 .btn-success {
-    @apply bg-green-600 text-white !border-green-600 transition-all duration-300 hover:bg-green-700 hover:border-green-700;
+    @apply bg-green-600 text-white border-green-400 transition-all duration-300 hover:bg-green-700 hover:border-green-700;
 }
 
 .btn-danger {
-    @apply bg-red-500 text-white !border-red-500 transition-all duration-300 hover:bg-red-600 hover:border-red-600;
+    @apply bg-red-500 text-white border-red-300 transition-all duration-300 hover:bg-red-700 hover:border-red-700;
 }
 
 .btn-info {
-    @apply bg-teal-500 text-white !border-teal-500 transition-all duration-300 hover:bg-teal-600 hover:border-teal-600;
+    @apply bg-teal-500 text-white border-teal-400 transition-all duration-300 hover:bg-teal-700 hover:border-teal-700;
 }
 
 .card-primary>.card-header {
-    @apply bg-blue-500 text-white !border-blue-500 transition-all duration-300;
+    @apply bg-blue-500 text-white border-blue-500 transition-all duration-300;
 }
 
 .card-success>.card-header {
-    @apply bg-green-600 text-white !border-green-600 transition-all duration-300;
+    @apply bg-green-600 text-white border-green-600 transition-all duration-300;
 }
 
 .card-danger>.card-header {
-    @apply bg-red-500 text-white !border-red-500 transition-all duration-300;
+    @apply bg-red-500 text-white border-red-500 transition-all duration-300;
 }
 
 .card-info>.card-header {
-    @apply bg-teal-500 text-white !border-teal-500 transition-all duration-300;
+    @apply bg-teal-500 text-white border-teal-500 transition-all duration-300;
 }
 
 /* utility css */
@@ -245,7 +245,11 @@ table tbody>tr>td {
 }
 
 .aside {
-    @apply fixed top-0 -left-full xl:left-0 w-[250px] h-screen bg-side-primary z-50 overflow-scroll;
+    @apply fixed top-0 bg-side-primary w-[250px] h-full z-50 overflow-y-scroll;
+}
+
+.aside::-webkit-scrollbar {
+    @apply w-0;
 }
 
 .aside.active {
@@ -266,14 +270,14 @@ table tbody>tr>td {
 }
 
 .zb-nav-link {
-    @apply relative flex flex-row items-center gap-2.5 text-side-secondary px-4 py-2 rounded-md *:pointer-events-none transition-all duration-300 hover:bg-blue-500 hover:text-white;
+    @apply relative flex flex-row items-center gap-2.5 text-side-secondary px-4 py-1 text-[15px] rounded-md *:pointer-events-none transition-all duration-300 hover:bg-blue-500 hover:text-white;
 }
 
-.zb-nav-link>span>i {
-    @apply text-lg;
+.zb-nav-link > span > i {
+    @apply text-base;
 }
 
-.zb-nav-link>i {
+.zb-nav-link > i {
     @apply absolute top-1/2 right-3 -translate-y-1/2 pointer-events-none;
 }
 
@@ -286,7 +290,7 @@ table tbody>tr>td {
 }
 
 .zb-sub-nav-link {
-    @apply flex flex-row items-center gap-2 px-4 py-2 text-side-secondary rounded-md *:pointer-events-none text-[15px] hover:bg-gray-600 hover:text-white;
+    @apply flex flex-row items-center gap-2 px-4 py-2 text-side-secondary rounded-md *:pointer-events-none text-sm hover:bg-gray-600 hover:text-white;
 }
 
 .zb-sub-nav-item>a.active {
@@ -321,7 +325,6 @@ table tbody>tr>td {
 .zb-circle {
     @apply w-1 relative after:content-[''] after:text-2xl after:absolute after:top-1/2 after:-translate-1/2 after:left-0 after:w-3.5 after:h-3.5 after:border-2 after:border-white after:rounded-full;
 }
-
 .zb-text-error {
-    @apply text-red-600 text-sm;
+    @apply text-red-600 text-sm;    
 }

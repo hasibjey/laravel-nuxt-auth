@@ -9,12 +9,20 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use function Flasher\Prime\flash;
 
 class AccountVerificationController extends Controller
 {
-    public function sendCode($hash)
+    /**
+     * Send a verification code to the user's email
+     * 
+     * @param string $hash The hashed email address
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sendCode($hash): RedirectResponse
     {
         $identifier = decrypt($hash);
         $this->codeGenarate($identifier);
@@ -22,12 +30,26 @@ class AccountVerificationController extends Controller
         return Redirect::route('verifyAccount', [$hash]);
     }
 
-    public function verifyAccount($hash)
+    /**
+     * Render the verification account page
+     * 
+     * @param string $hash The hashed email address
+     * @return \Illuminate\View\View
+     */
+    public function verifyAccount($hash): View
     {
         return view('auth.verify-account');
     }
-
-    public function verification(Request $request)
+    
+    /**
+     * Verifies the user's account by validating the OTP sent to their email address
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * 
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function verification(Request $request): RedirectResponse
     {
         $request->validate([
             'email' => 'required|email|exists:verification_codes,identifier',
@@ -70,6 +92,13 @@ class AccountVerificationController extends Controller
         }
     }
 
+    /**
+     * Generates a verification code and saves it to the database.
+     *
+     * @param string $identifier The identifier (email) associated with the verification code.
+     *
+     * @return void
+     */
     private function codeGenarate($identifier)
     {
         $code = random_int(10000, 99999);

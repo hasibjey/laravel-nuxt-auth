@@ -25,10 +25,10 @@ const auth = useAuthStore();
 
                 <ul class="nav-sub-group hidden group-hover:block">
                     <li class="nav-sub-item">
-                        <NuxtLink to="/profile">Profile</NuxtLink>
+                        <NuxtLink to="/profile" class="nav-sub-link">Profile</NuxtLink>
                     </li>
                     <li class="nav-sub-item">
-                        <NuxtLink @click.prevent="auth.logout()">Logout</NuxtLink>
+                        <NuxtLink class="nav-sub-link" @click.prevent="auth.logout()">Logout</NuxtLink>
                     </li>
                 </ul>
             </li>

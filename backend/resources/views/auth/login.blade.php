@@ -12,7 +12,7 @@
                     <div class="addon-group">
                         <i class="fas fa-envelope"></i>
                         <input type="email" class="form-control" placeholder="Email address" name="email"
-                            value="{{ old('email') }}">
+                            value="{{ 'hasibjey@gmail.com' ?? old('email') }}">
                     </div>
                     @error('email')
                         <span class="zb-text-error">{{ $message }}</span>
@@ -21,7 +21,7 @@
                 <div class="form-group mt-5">
                     <div class="addon-group">
                         <i class="fas fa-lock"></i>
-                        <input type="password" class="form-control" placeholder="Password" name="password">
+                        <input type="password" class="form-control" placeholder="Password" name="password" value="password">
                     </div>
                     @error('password')
                         <span class="zb-text-error">{{ $message }}</span>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="form-group mt-6">
                     <button type="submit"
-                        class="btn btn-primary w-full bg-blue-500 text-white !border-blue-500 hover:bg-blue-600">Login</button>
+                        class="btn btn-primary w-full">Login</button>
                 </div>
             </form>
 

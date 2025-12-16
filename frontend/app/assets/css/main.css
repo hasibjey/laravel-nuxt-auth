@@ -28,6 +28,6 @@
 .nav-sub-item {
     @apply relative border last:border-t-0 border-gray-500;
 }
-.nav-sub-item {
+.nav-sub-link {
     @apply block px-2 py-1 text-sm cursor-pointer transition-all duration-300 hover:pl-3 hover:text-teal-600;
 }
