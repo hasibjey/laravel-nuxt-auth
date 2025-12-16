@@ -18,7 +18,7 @@ class RolePermission
     public function handle(Request $request, Closure $next, $permission): Response
     {
         // Check if the user is logged in with the 'admin' guard
-        $user = Auth::guard('admin')->user();
+        $user = Auth::guard('web')->user();
 
         if (!$user || !$user->can($permission)) {
             throw UnauthorizedException::forPermissions([$permission]);

@@ -76,7 +76,7 @@ class PermissionController extends Controller implements HasMiddleware
             );
         }
 
-        flash()->success('Permission inserted successfully..');
+        flash()->option('timeout', 1500)->success('Permission inserted successfully..');
         return Redirect::route('permission.create');
     }
 
@@ -97,7 +97,7 @@ class PermissionController extends Controller implements HasMiddleware
             'guard_name' => 'web',
         ]);
 
-        flash()->success('Permission updated successfully..');
+        flash()->option('timeout', 1500)->success('Permission updated successfully..');
         return Redirect::route('permission.create');
     }
 
@@ -113,7 +113,7 @@ class PermissionController extends Controller implements HasMiddleware
         $permission = Permission::findOrFail($id);
         $permission->delete();
 
-        flash()->success('Permission deleted successfully..');
+        flash()->option('timeout', 1500)->success('Permission deleted successfully..');
         return Redirect::route('permission.create');
     }
 }

@@ -65,7 +65,6 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        return 'ok';
         $request->validate([
             'name' => ['required', 'string', 'unique:roles,name'],
         ]);
@@ -80,7 +79,7 @@ class RoleController extends Controller implements HasMiddleware
             $role->syncPermissions($request->permission);
         }
 
-        flash()->success('Role added successfully..');
+        flash()->option('timeout', 1500)->success('Role added successfully..');
         return Redirect::route('role.create');
     }
 
@@ -117,7 +116,7 @@ class RoleController extends Controller implements HasMiddleware
             $role->syncPermissions([]);
         }
 
-        flash()->success('Role updated successfully.');
+        flash()->option('timeout', 1500)->success('Role updated successfully.');
         return Redirect::route('role.create');
     }
 
@@ -127,7 +126,7 @@ class RoleController extends Controller implements HasMiddleware
         $id = decrypt($id);
         $role = Role::findOrFail($id);
         $role->delete();
-        flash()->success('Role deleted successfully');
+        flash()->option('timeout', 1500)->success('Role deleted successfully');
         return Redirect::route('role.create');
     }
 }
